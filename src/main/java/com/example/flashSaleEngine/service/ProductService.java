@@ -27,7 +27,7 @@ public class ProductService {
                     Product p = new Product();
                     p.setId(productId);
                     p.setName("iPhone");
-                    p.setStock(2);
+                    p.setStock(2000);
                     p.setPrice(10000);
                     return productRepository.save(p);
                 });
