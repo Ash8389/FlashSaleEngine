@@ -12,7 +12,6 @@ public class OrderConsumer {
     @Autowired
     OrderRepository orderRepository;
     private static final String TOPIC = "flash-sale-orders";
-
     @KafkaListener(topics = TOPIC, groupId = "flash-sale-group")
     public void processOrder(OrderResponse orderResponse) {
         System.out.printf("CONSUMER: Received event for User %s. Saving to DB...%n", orderResponse.getUserId());
