@@ -106,15 +106,16 @@ public class ProductService {
         return false;
     }
 
-    public boolean attemptPurchase(String productId) {
+    public int attemptPurchase(String productId) {
         String key = STOCK_PREFIX + productId;
         Long remainingStock = redisTemplate.opsForValue().decrement(key);
 
         if (remainingStock != null && remainingStock >= 0) {
-            return true;
+            return remainingStock.intValue();
         } else {
             redisTemplate.opsForValue().increment(key);
-            return false;
+            return -1;
         }
     }
+
 }

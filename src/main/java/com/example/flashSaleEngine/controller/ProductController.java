@@ -8,6 +8,7 @@ import com.example.flashSaleEngine.security.model.CustomUserDetails;
 import com.example.flashSaleEngine.service.OrderProducer;
 import com.example.flashSaleEngine.service.ProductService;
 import com.example.flashSaleEngine.service.RateLimitingService;
+import com.example.flashSaleEngine.service.StockUpdatePublisher;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,9 @@ public class ProductController {
     @Autowired
     private OrderProducer orderProducer;
 
+    @Autowired
+    private StockUpdatePublisher stockUpdatePublisher;
+
     @Operation(
             summary = "Place an order",
             description = "Allows an authenticated user to place an order for a product during flash sale"
@@ -39,8 +43,9 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("So many attempts, try after sometimes!!");
         }
 
-        boolean attempt = productService.attemptPurchase(proId);
-        if(attempt){
+        int stockLeft = productService.attemptPurchase(proId);
+        if(stockLeft>=0){
+            stockUpdatePublisher.publish(proId, stockLeft);
             OrderResponse orderResponse = new OrderResponse(user.getId(), proId);
             orderProducer.sendOrderResponse(orderResponse);
 

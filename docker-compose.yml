@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: flashSaleEngine-app
+    ports:
+      - "8081:8080"
+    env_file:
+      - .env
+    environment:
+      SPRING_DATA_MONGODB_URI: ${MONGO_URI}
+
