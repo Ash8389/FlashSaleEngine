@@ -24,7 +24,7 @@ public class JwtUtils {
                 .setSubject(request.getUsername())
                 .signWith(Keys.hmacShaKeyFor(KEY.getBytes()))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 60*60*100))
+                .setExpiration(new Date(System.currentTimeMillis() + 60*60*1000))
                 .compact();
     }
     public String nameExtractor(String token){

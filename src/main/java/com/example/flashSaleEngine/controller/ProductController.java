@@ -38,6 +38,8 @@ public class ProductController {
     @PostMapping("/buy/{proId}")
     public ResponseEntity<String> buyProduct(@PathVariable String proId, @AuthenticationPrincipal CustomUserDetails userDetails){
 
+        System.out.println(proId);
+
         User user = userDetails.getUser();
         if(!rateLimitingService.tryAccess(user.getId())){
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body("So many attempts, try after sometimes!!");
@@ -73,7 +75,7 @@ public class ProductController {
             summary = "Add Product",
             description = "Allows an authenticated user to add product"
     )
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<ProductDto> addProduct(@RequestBody Product product){
         ProductDto savedProduct = productService.addProduct(product);
         if(savedProduct != null) {

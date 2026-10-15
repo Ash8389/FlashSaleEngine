@@ -45,6 +45,7 @@ public class ProductService {
 //        );
 //    }
     public ProductDto getProduct(String id) {
+
         if (productRepository.existsById(id)) {
             Product product = productRepository.findById(id).orElseThrow();
 
@@ -107,6 +108,8 @@ public class ProductService {
     }
 
     public int attemptPurchase(String productId) {
+        System.out.println(productId);
+
         String key = STOCK_PREFIX + productId;
         Long remainingStock = redisTemplate.opsForValue().decrement(key);
 

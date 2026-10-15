@@ -8,7 +8,7 @@ import java.util.UUID;
 @Document(collection = "products")
 public class Product {
     @Id
-    private String id = UUID.randomUUID().toString();
+    private String id;
     private String name;
     private String description;
     private int stock;
